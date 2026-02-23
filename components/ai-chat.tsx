@@ -12,18 +12,12 @@ interface Message {
 
 function TypingIndicator() {
   return (
-    <div className="flex items-center gap-1 px-1 py-2">
+    <div className="flex items-center gap-1.5 px-1 py-1">
       {[0, 1, 2].map((i) => (
-        <motion.span
+        <span
           key={i}
-          className="h-2 w-2 rounded-full bg-primary/60"
-          animate={{ y: [0, -6, 0] }}
-          transition={{
-            repeat: Infinity,
-            duration: 0.6,
-            delay: i * 0.15,
-            ease: "easeInOut",
-          }}
+          className="h-1.5 w-1.5 rounded-full bg-primary/60 animate-bounce"
+          style={{ animationDelay: `${i * 0.15}s` }}
         />
       ))}
     </div>
@@ -89,8 +83,7 @@ export function AiChat() {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content:
-          "Sorry, I couldn't connect to the AI server. Make sure the backend is running at http://localhost:8000.",
+        content: "Sorry, I couldn't connect to the AI server right now.",
       }
       setMessages((prev) => [...prev, errorMessage])
     } finally {
@@ -100,75 +93,74 @@ export function AiChat() {
 
   return (
     <>
-      {/* Floating chat button */}
-      <motion.button
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 1, type: "spring", stiffness: 200 }}
+      <button
         onClick={() => setIsOpen(true)}
-        className={`fixed right-6 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 ${
-          isOpen ? "pointer-events-none opacity-0" : ""
+        className={`fixed right-4 bottom-4 sm:right-6 sm:bottom-6 z-50 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-2xl transition-all hover:scale-110 active:scale-90 cursor-pointer ${
+          isOpen ? "pointer-events-none opacity-0 scale-0" : "scale-100 opacity-100"
         }`}
         aria-label="Open AI Chat"
+        title="Open AI Chat"
       >
-        <MessageSquare className="h-6 w-6" />
-        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-foreground text-[10px] font-bold text-background">
+        <MessageSquare className="h-6 w-6 sm:h-7 sm:w-7" />
+        <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-foreground text-[10px] font-black text-background border-2 border-primary">
           AI
         </span>
-      </motion.button>
+      </button>
 
-      {/* Chat window */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 100, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed right-4 bottom-4 z-50 flex h-[560px] w-[380px] flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl shadow-black/40 sm:right-6 sm:bottom-6"
+            exit={{ opacity: 0, y: 100, scale: 0.9 }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed bottom-0 right-0 left-0 z-50 flex h-[90vh] flex-col overflow-hidden rounded-t-[2rem] border-t border-x border-border bg-background shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.3)] sm:bottom-6 sm:right-6 sm:left-auto sm:h-[650px] sm:max-h-[calc(100vh-80px)] sm:w-[420px] sm:rounded-3xl sm:border"
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-border bg-card/80 px-5 py-4 backdrop-blur-sm">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
-                  <Sparkles className="h-4 w-4 text-primary" />
+            <div className="flex items-center justify-between border-b border-border bg-muted/30 px-6 py-5 sm:py-6">
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
+                  <Sparkles className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-foreground">
-                    {"Abhay's AI Assistant"}
+                  <h3 className="text-sm font-black text-foreground tracking-tight">
+                    TECHNICAL ASSISTANT
                   </h3>
-                  <p className="text-xs text-muted-foreground">
-                    Ask me anything about Abhay
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                      Online
+                    </p>
+                  </div>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                className="flex h-12 w-12 items-center justify-center rounded-2xl transition-all hover:bg-muted hover:rotate-90 active:scale-90"
                 aria-label="Close chat"
               >
-                <X className="h-4 w-4" />
+                <X className="h-6 w-6 text-muted-foreground" />
               </button>
             </div>
 
-            {/* Messages area */}
-            <div className="flex-1 overflow-y-auto px-5 py-4">
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto px-5 py-8 sm:px-6">
               {messages.length === 0 && (
-                <div className="flex h-full flex-col items-center justify-center text-center">
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-                    <Bot className="h-7 w-7 text-primary" />
+                <div className="flex h-full flex-col items-center justify-center text-center px-4">
+                  <div className="mb-6 rounded-3xl bg-secondary/30 p-6">
+                    <Bot className="h-12 w-12 text-primary" />
                   </div>
-                  <h4 className="mb-2 text-sm font-semibold text-foreground">
-                    AI Chat
+                  <h4 className="mb-3 text-lg font-black text-foreground uppercase tracking-widest">
+                    AI CONCIERGE
                   </h4>
-                  <p className="mb-6 max-w-[250px] text-xs leading-relaxed text-muted-foreground">
-                    Ask me anything about Abhay&apos;s skills, experience, projects, or background.
+                  <p className="mb-10 max-w-[280px] text-sm font-medium leading-relaxed text-muted-foreground">
+                    I&apos;m here to answer any questions about Abhay&apos;s technical background and projects.
                   </p>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-3 w-full max-w-[320px]">
                     {[
-                      "What are Abhay's main skills?",
-                      "Tell me about his experience",
-                      "What projects has he built?",
+                      "What is his tech stack?",
+                      "Tell me about his work experience",
+                      "Show me his top projects",
                     ].map((suggestion) => (
                       <button
                         key={suggestion}
@@ -176,7 +168,7 @@ export function AiChat() {
                           setInput(suggestion)
                           inputRef.current?.focus()
                         }}
-                        className="rounded-lg border border-border bg-secondary/30 px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:border-primary/30 hover:bg-secondary/50 hover:text-foreground"
+                        className="rounded-2xl border-2 border-border bg-background px-5 py-4 text-left text-sm font-bold text-muted-foreground transition-all hover:border-primary/50 hover:bg-muted/50 hover:text-foreground active:scale-95"
                       >
                         {suggestion}
                       </button>
@@ -185,83 +177,84 @@ export function AiChat() {
                 </div>
               )}
 
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`mb-4 flex gap-3 ${
-                    message.role === "user" ? "flex-row-reverse" : ""
-                  }`}
-                >
+              <div className="flex flex-col gap-6">
+                {messages.map((message) => (
                   <div
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${
-                      message.role === "user"
-                        ? "bg-primary/10"
-                        : "bg-secondary"
+                    key={message.id}
+                    className={`flex gap-4 ${
+                      message.role === "user" ? "flex-row-reverse" : ""
                     }`}
                   >
-                    {message.role === "user" ? (
-                      <User className="h-3.5 w-3.5 text-primary" />
-                    ) : (
-                      <Bot className="h-3.5 w-3.5 text-primary" />
-                    )}
+                    <div
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-sm ${
+                        message.role === "user"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-secondary text-foreground"
+                      }`}
+                    >
+                      {message.role === "user" ? (
+                        <User className="h-5 w-5" />
+                      ) : (
+                        <Bot className="h-5 w-5" />
+                      )}
+                    </div>
+                    <div
+                      className={`max-w-[85%] rounded-2xl px-5 py-4 text-sm font-medium leading-relaxed shadow-sm ${
+                        message.role === "user"
+                          ? "bg-primary/10 border-2 border-primary/20 text-foreground"
+                          : "border-2 border-border bg-background text-foreground"
+                      }`}
+                    >
+                      {message.content}
+                    </div>
                   </div>
-                  <div
-                    className={`max-w-[75%] rounded-xl px-3.5 py-2.5 text-[13px] leading-relaxed ${
-                      message.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "border border-border bg-secondary/30 text-foreground"
-                    }`}
-                  >
-                    {message.content}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
 
               {isLoading && (
-                <div className="mb-4 flex gap-3">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-secondary">
-                    <Bot className="h-3.5 w-3.5 text-primary" />
+                <div className="mt-6 flex gap-4">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-secondary text-foreground shadow-sm">
+                    <Bot className="h-5 w-5" />
                   </div>
-                  <div className="rounded-xl border border-border bg-secondary/30 px-3.5 py-2.5">
+                  <div className="rounded-2xl border-2 border-border bg-background px-4 py-3 shadow-sm">
                     <TypingIndicator />
                   </div>
                 </div>
               )}
 
-              <div ref={messagesEndRef} />
+              <div ref={messagesEndRef} className="h-4" />
             </div>
 
-            {/* Input area */}
+            {/* Input form */}
             <form
               onSubmit={sendMessage}
-              className="border-t border-border bg-card/80 px-4 py-3 backdrop-blur-sm"
+              className="border-t border-border bg-muted/10 p-5 sm:p-6"
             >
-              <div className="flex items-center gap-2 rounded-xl border border-border bg-background px-3 py-1 focus-within:border-primary/50 transition-colors">
+              <div className="flex items-center gap-3 rounded-2xl border-2 border-border bg-background p-2 transition-all focus-within:border-primary/50 focus-within:shadow-lg focus-within:shadow-primary/5">
                 <input
                   ref={inputRef}
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Type your message..."
-                  className="flex-1 bg-transparent py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground"
+                  placeholder="Ask a question..."
+                  className="flex-1 bg-transparent py-3 px-3 text-sm font-bold text-foreground outline-none placeholder:text-muted-foreground/60"
                   disabled={isLoading}
                 />
                 <button
                   type="submit"
                   disabled={isLoading || !input.trim()}
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-all disabled:opacity-40 hover:bg-primary/90 disabled:hover:bg-primary"
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 transition-all disabled:opacity-50 hover:bg-primary/90 active:scale-90"
                   aria-label="Send message"
                 >
-                  <Send className="h-4 w-4" />
+                  <Send className="h-5 w-5" />
                 </button>
               </div>
-              <p className="mt-2 text-center text-[10px] text-muted-foreground/60">
-                Powered by FastAPI
-              </p>
             </form>
           </motion.div>
         )}
       </AnimatePresence>
+
     </>
   )
 }
+

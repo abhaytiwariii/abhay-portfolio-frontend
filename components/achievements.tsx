@@ -1,6 +1,5 @@
 "use client"
 
-import { motion } from "framer-motion"
 import { Award, Zap, Shield, Users } from "lucide-react"
 import { SectionHeader } from "@/components/section-header"
 
@@ -36,35 +35,31 @@ export function Achievements() {
     <section className="px-6 py-24">
       <div className="mx-auto max-w-4xl">
         <SectionHeader
-          label="// achievements"
+          label="achievements"
           title="Beyond Code"
           description="Leadership, competitions, and contributions outside the IDE."
         />
 
-        <div className="grid gap-6 sm:grid-cols-2">
-          {achievements.map((item, i) => {
+        <div className="grid gap-8 sm:grid-cols-2">
+          {achievements.map((item) => {
             const Icon = item.icon
             return (
-              <motion.div
+              <div
                 key={item.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="group flex gap-4 rounded-xl border border-border bg-card/50 p-6 backdrop-blur-sm transition-all hover:border-primary/30"
+                className="group flex gap-6 border-l-2 border-border bg-background p-6 transition-colors hover:border-primary hover:bg-muted/50"
               >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
-                  <Icon className="h-5 w-5" />
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded bg-muted text-primary">
+                  <Icon className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="mb-1 text-sm font-semibold text-foreground">
+                  <h3 className="mb-2 text-lg font-bold text-foreground">
                     {item.title}
                   </h3>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
+                  <p className="text-base leading-relaxed text-muted-foreground">
                     {item.description}
                   </p>
                 </div>
-              </motion.div>
+              </div>
             )
           })}
         </div>
@@ -72,3 +67,4 @@ export function Achievements() {
     </section>
   )
 }
+

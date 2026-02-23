@@ -1,6 +1,5 @@
 "use client"
 
-import { motion } from "framer-motion"
 import { SectionHeader } from "@/components/section-header"
 
 const skillCategories = [
@@ -35,72 +34,49 @@ const skillCategories = [
   },
 ]
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-}
-
 export function Skills() {
   return (
-    <section id="skills" className="px-6 py-24">
+    <section id="skills" className="px-6 py-24 bg-muted/30">
       <div className="mx-auto max-w-4xl">
         <SectionHeader
-          label="// skills"
-          title="Tech Stack"
+          label="skills"
+          title="Technical Proficiency"
           description="Technologies and tools I work with to build production-ready applications."
         />
 
-        <div className="grid gap-8 md:grid-cols-3">
-          {skillCategories.map((cat, i) => (
-            <motion.div
+        <div className="grid gap-10 md:grid-cols-3">
+          {skillCategories.map((cat) => (
+            <div
               key={cat.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
-              className="rounded-xl border border-border bg-card/50 p-6 backdrop-blur-sm"
+              className="flex flex-col"
             >
-              <h3 className="mb-6 font-mono text-sm font-medium text-primary">{cat.title}</h3>
+              <h3 className="mb-6 font-bold text-lg text-foreground uppercase tracking-widest border-b border-border pb-2">
+                {cat.title}
+              </h3>
 
-              <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="flex flex-col gap-5"
-              >
+              <div className="flex flex-col gap-6">
                 {cat.skills.map((skill) => (
-                  <motion.div key={skill.name} variants={itemVariants}>
+                  <div key={skill.name}>
                     <div className="mb-2 flex items-center justify-between text-sm">
-                      <span className="text-foreground">{skill.name}</span>
-                      <span className="font-mono text-xs text-muted-foreground">
+                      <span className="font-semibold text-foreground">{skill.name}</span>
+                      <span className="font-mono text-[10px] text-muted-foreground">
                         {skill.level}%
                       </span>
                     </div>
-                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-                        className="h-full rounded-full bg-primary"
+                    <div className="h-1 w-full overflow-hidden bg-muted">
+                      <div
+                        style={{ width: `${skill.level}%` }}
+                        className="h-full bg-primary"
                       />
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
     </section>
   )
 }
+

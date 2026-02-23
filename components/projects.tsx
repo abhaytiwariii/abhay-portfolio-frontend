@@ -1,6 +1,5 @@
 "use client"
 
-import { motion } from "framer-motion"
 import { ExternalLink, Github, Youtube } from "lucide-react"
 import { SectionHeader } from "@/components/section-header"
 
@@ -9,9 +8,9 @@ const projects = [
     title: "Therapist Maya",
     description:
       "A mental health platform with localized routing and calming UI components, focused on high user retention. Features fluid animations and SEO optimizations with high Lighthouse scores.",
-    tech: ["Next.js", "Tailwind CSS", "TypeScript", "Framer Motion"],
-    link: "#",
-    github: "#",
+    tech: ["Next.js", "Tailwind CSS", "React", "TypeScript", "Framer Motion"],
+    link: "https://therapist-maya.vercel.app/",
+    github: "https://github.com/abhaytiwariii/Therapist-Maya",
     featured: true,
   },
   {
@@ -19,17 +18,17 @@ const projects = [
     description:
       "Deployed and currently in real-world use at my college to track cadet attendance daily. Automated the attendance calculation process, reducing manual paperwork and entry errors.",
     tech: ["HTML", "CSS", "JavaScript", "Local Storage"],
-    link: "#",
-    github: "#",
+    link: "https://vmv-ncc-attendance-tracker.netlify.app/",
+    github: "https://github.com/abhaytiwariii/ncc-attendance-tracker",
     featured: true,
   },
   {
     title: "Mahindra Lifespaces",
     description:
       "Successfully executed a pixel-perfect conversion of a complex corporate Figma design into a fully functional and responsive web application.",
-    tech: ["Next.js", "TypeScript", "React.js", "Tailwind CSS"],
-    link: "#",
-    github: "#",
+    tech: ["Next.js", "TypeScript", "React.js", "Tailwind CSS", "Figma"],
+    link: "https://mahindra-lifespaces.netlify.app/",
+    github: "https://github.com/abhaytiwariii/mahindra-lifespaces",
     featured: false,
   },
   {
@@ -47,38 +46,34 @@ const youtubeChannel = {
   title: "Dinesh Sir Shorts",
   description:
     "A YouTube channel featuring educational short-form content. Built the brand presence and content strategy to engage a growing audience.",
-  link: "#",
+  link: "https://www.youtube.com/@dineshsirshorts",
 }
 
 export function Projects() {
   return (
     <section id="projects" className="px-6 py-24">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-6xl">
         <SectionHeader
-          label="// projects"
-          title="Things I've Built"
+          label="projects"
+          title="Featured Projects"
           description="A collection of projects that showcase my expertise in full-stack development."
         />
 
         {/* Featured projects */}
-        <div className="mb-8 grid gap-6 md:grid-cols-2">
+        <div className="mb-12 grid gap-8 md:grid-cols-2">
           {projects
             .filter((p) => p.featured)
-            .map((project, i) => (
-              <motion.article
+            .map((project) => (
+              <article
                 key={project.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group relative overflow-hidden rounded-xl border border-border bg-card/50 p-6 backdrop-blur-sm transition-all hover:border-primary/30 hover:bg-card/80 sm:p-8"
+                className="group flex flex-col justify-between border border-border bg-background p-8 transition-all hover:shadow-lg"
               >
-                <div className="pointer-events-none absolute top-0 right-0 h-32 w-32 bg-primary/5 blur-[80px] transition-all group-hover:bg-primary/10" />
-
-                <div className="relative">
-                  <div className="mb-4 flex items-center justify-between">
-                    <span className="font-mono text-xs text-primary">Featured Project</span>
-                    <div className="flex items-center gap-3">
+                <div>
+                  <div className="mb-6 flex items-center justify-between">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
+                      Featured Project
+                    </span>
+                    <div className="flex items-center gap-4">
                       {project.github && project.github !== "#" && (
                         <a
                           href={project.github}
@@ -87,7 +82,7 @@ export function Projects() {
                           className="text-muted-foreground transition-colors hover:text-primary"
                           aria-label={`${project.title} GitHub repository`}
                         >
-                          <Github className="h-4 w-4" />
+                          <Github className="h-5 w-5" />
                         </a>
                       )}
                       {project.link && project.link !== "#" && (
@@ -98,114 +93,124 @@ export function Projects() {
                           className="text-muted-foreground transition-colors hover:text-primary"
                           aria-label={`${project.title} live demo`}
                         >
+                          <ExternalLink className="h-5 w-5" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <h3 className="mb-4 text-2xl font-bold text-foreground">
+                    {project.title}
+                  </h3>
+                  <p className="mb-8 text-muted-foreground leading-relaxed">
+                    {project.description}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {project.tech.map((t) => (
+                    <span
+                      key={t}
+                      className="px-2 py-1 bg-muted text-muted-foreground text-[10px] font-bold uppercase tracking-wider rounded"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            ))}
+        </div>
+
+        {/* Other projects & Channel */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {projects
+            .filter((p) => !p.featured)
+            .map((project) => (
+              <article
+                key={project.title}
+                className="flex flex-col justify-between border border-border bg-background p-6 transition-all hover:shadow-md"
+              >
+                <div>
+                  <div className="mb-4 flex items-center justify-between">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                      Project
+                    </span>
+                    <div className="flex items-center gap-4">
+                      {project.github && project.github !== "#" && (
+                        <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground transition-colors hover:text-primary"
+                        aria-label={`${project.title} GitHub repository`}
+                        >
+                            <Github className="h-5 w-5" />
+                          </a>
+                        )}
+                      {project.link && project.link !== "#" && (
+                        <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground transition-colors hover:text-primary"
+                        aria-label={`${project.title} live demo`}
+                        >
                           <ExternalLink className="h-4 w-4" />
                         </a>
                       )}
                     </div>
                   </div>
 
-                  <h3 className="mb-3 text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                  <h3 className="mb-3 text-lg font-bold text-foreground">
                     {project.title}
                   </h3>
-                  <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
+                  <p className="mb-6 text-sm text-muted-foreground leading-relaxed">
                     {project.description}
                   </p>
-
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-md border border-border bg-secondary/50 px-2.5 py-1 font-mono text-xs text-muted-foreground"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
                 </div>
-              </motion.article>
-            ))}
-        </div>
-
-        {/* Other projects */}
-        <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {projects
-            .filter((p) => !p.featured)
-            .map((project, i) => (
-              <motion.article
-                key={project.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group rounded-xl border border-border bg-card/50 p-6 backdrop-blur-sm transition-all hover:border-primary/30 hover:bg-card/80"
-              >
-                <div className="mb-4 flex items-center justify-between">
-                  <span className="font-mono text-xs text-muted-foreground">Project</span>
-                  <div className="flex items-center gap-3">
-                    {project.link && project.link !== "#" && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground transition-colors hover:text-primary"
-                        aria-label={`${project.title} live demo`}
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                <h3 className="mb-2 text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                  {project.title}
-                </h3>
-                <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
-                  {project.description}
-                </p>
 
                 <div className="flex flex-wrap gap-2">
                   {project.tech.map((t) => (
                     <span
                       key={t}
-                      className="rounded-md border border-border bg-secondary/50 px-2.5 py-1 font-mono text-xs text-muted-foreground"
+                      className="px-2 py-0.5 bg-muted text-muted-foreground text-[10px] font-medium rounded"
                     >
                       {t}
                     </span>
                   ))}
                 </div>
-              </motion.article>
+              </article>
             ))}
 
           {/* YouTube Channel Card */}
-          <motion.article
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="group rounded-xl border border-border bg-card/50 p-6 backdrop-blur-sm transition-all hover:border-primary/30 hover:bg-card/80"
-          >
-            <div className="mb-4 flex items-center justify-between">
-              <span className="font-mono text-xs text-muted-foreground">YouTube Channel</span>
-              <Youtube className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+          <article className="flex flex-col justify-between border border-border bg-background p-6 transition-all hover:shadow-md">
+            <div>
+              <div className="mb-4 flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                  Content Creation
+                </span>
+                <Youtube className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <h3 className="mb-3 text-lg font-bold text-foreground">
+                {youtubeChannel.title}
+              </h3>
+              <p className="mb-6 text-sm text-muted-foreground leading-relaxed">
+                {youtubeChannel.description}
+              </p>
             </div>
-            <h3 className="mb-2 text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-              {youtubeChannel.title}
-            </h3>
-            <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
-              {youtubeChannel.description}
-            </p>
             <a
               href={youtubeChannel.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-mono text-xs text-primary hover:underline"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary hover:gap-3 transition-all cursor-pointer"
             >
               Watch Videos
-              <ExternalLink className="h-3 w-3" />
+              <ExternalLink className="h-4 w-4" />
             </a>
-          </motion.article>
+          </article>
         </div>
       </div>
     </section>
   )
 }
+
