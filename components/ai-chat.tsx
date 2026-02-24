@@ -126,17 +126,16 @@ export function AiChat() {
                   <h3 className="text-sm font-black text-foreground tracking-tight">
                     TECHNICAL ASSISTANT
                   </h3>
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                      Online
-                    </p>
-                  </div>
+                  
+                  <p className="text-[10px] text-muted-foreground tracking-widest">
+                    Using a free AI model and free hosting.<br />
+                    Initial responses may take 1–2 minutes. 
+                  </p>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="flex h-12 w-12 items-center justify-center rounded-2xl transition-all hover:bg-muted hover:rotate-90 active:scale-90"
+                className="flex h-12 w-12 items-center justify-center rounded-2xl transition-all hover:bg-muted hover:rotate-90 active:scale-90 cursor-pointer"
                 aria-label="Close chat"
               >
                 <X className="h-6 w-6 text-muted-foreground" />
@@ -156,7 +155,7 @@ export function AiChat() {
                   <p className="mb-10 max-w-[280px] text-sm font-medium leading-relaxed text-muted-foreground">
                     I&apos;m here to answer any questions about Abhay&apos;s technical background and projects.
                   </p>
-                  <div className="flex flex-col gap-3 w-full max-w-[320px]">
+                  <div className="flex flex-col gap-2 w-full max-w-[320px] pb-2">
                     {[
                       "What is his tech stack?",
                       "Tell me about his work experience",
@@ -168,7 +167,7 @@ export function AiChat() {
                           setInput(suggestion)
                           inputRef.current?.focus()
                         }}
-                        className="rounded-2xl border-2 border-border bg-background px-5 py-4 text-left text-sm font-bold text-muted-foreground transition-all hover:border-primary/50 hover:bg-muted/50 hover:text-foreground active:scale-95"
+                        className="rounded-2xl border-2 border-border bg-background px-5 py-4 text-left text-sm font-bold text-muted-foreground transition-all hover:border-primary/50 hover:bg-muted/50 hover:text-foreground active:scale-95 cursor-pointer"
                       >
                         {suggestion}
                       </button>
@@ -243,7 +242,7 @@ export function AiChat() {
                 <button
                   type="submit"
                   disabled={isLoading || !input.trim()}
-                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 transition-all disabled:opacity-50 hover:bg-primary/90 active:scale-90"
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 transition-all disabled:opacity-50 hover:bg-primary/90 active:scale-90 cursor-pointer disabled:cursor-not-allowed"
                   aria-label="Send message"
                 >
                   <Send className="h-5 w-5" />
