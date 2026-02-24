@@ -62,7 +62,7 @@ export function AiChat() {
     setIsLoading(true)
 
     try {
-      const res = await fetch("https://abhay-portfolio-backend.up.railway.app/chat", {
+      const res = await fetch("https://abhay-portfolio-backend.onrender.com/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: trimmed }),
